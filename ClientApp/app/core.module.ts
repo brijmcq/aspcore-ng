@@ -1,12 +1,11 @@
-import { FeatureService } from './services/feature.service';
-import { MakeService } from './services/make.service';
+
+import { VehicleService } from './services/vehicle.service';
 
 import { NgModule } from "@angular/core";
 
 @NgModule({
     providers: [
-     MakeService,
-     FeatureService
+     VehicleService
     ]
 })  
 export class CoreModule {
