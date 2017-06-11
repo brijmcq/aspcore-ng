@@ -11,5 +11,6 @@ namespace asp_ng.Data
             
         }
         public DbSet<Make> Makes { get; set; }
+        public DbSet<Feature> Features { get; set; }
     }
 }

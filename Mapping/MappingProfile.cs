@@ -8,8 +8,9 @@ namespace asp_ng.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Make,MakeViewModel>().ReverseMap();
-            CreateMap<Model,ModelViewModel>().ReverseMap();
+            CreateMap<Make,MakeViewModel>();
+            CreateMap<Model,ModelViewModel>();
+            CreateMap<Feature, FeatureViewModel>();
         }
     }
 }
