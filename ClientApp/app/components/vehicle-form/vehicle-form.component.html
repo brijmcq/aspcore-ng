@@ -3,7 +3,10 @@
 <form action="">
   <div class="form-group">
     <label for="make">Make</label>
-    <select name="make" class="form-control" id="make"></select>
+    <select name="make" class="form-control" id="make">
+      <option value=""></option>
+      <option *ngFor="let item of makes" value="{{item.id}}">{{item.name}}</option>
+    </select>
   </div>
     <div class="form-group">Model<label for="model"></label>
     <select name="model" id="model" class="form-control"></select>
