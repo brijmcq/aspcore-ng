@@ -8,7 +8,7 @@ export class MakeService {
   constructor(public http:Http) {
    } 
    getMakes(){
-     return this.http.get('/api/makes')
+     return this.http.get('http://localhost:5000/api/makes')
      .map( res => res.json());
    }
 }

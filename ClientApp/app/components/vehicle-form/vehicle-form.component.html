@@ -3,13 +3,18 @@
 <form action="">
   <div class="form-group">
     <label for="make">Make</label>
-    <select name="make" class="form-control" id="make">
+    <select name="make"  [(ngModel)]="vehicle.make" (change)="onMakeChange()" class="form-control" id="make">
       <option value=""></option>
       <option *ngFor="let item of makes" value="{{item.id}}">{{item.name}}</option>
     </select>
   </div>
-    <div class="form-group">Model<label for="model"></label>
-    <select name="model" id="model" class="form-control"></select>
+    <div class="form-group">
+    <label for="model">Model</label>
+    <select name="model" id="model" class="form-control">
+    <option value=""></option>
+    <option *ngFor="let item of models" value="{{item.id}}">{{item.name}}</option>
+    </select>
+   
   </div>
 
 </form>
