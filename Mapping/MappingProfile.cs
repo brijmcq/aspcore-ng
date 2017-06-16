@@ -10,8 +10,8 @@ namespace asp_ng.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Make,MakeViewModel>();
-            CreateMap<Model,ModelViewModel>();
+            CreateMap<Make,KeyValuePairViewModel>();
+            CreateMap<Model,KeyValuePairViewModel>();
             CreateMap<Feature, FeatureViewModel>();
             CreateMap<Vehicle,SaveVehicleViewModel>()
             .ForMember( x=> x.Contact, opt=> opt.MapFrom( y=> new Contact{Name = y.ContactName

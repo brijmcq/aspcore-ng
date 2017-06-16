@@ -5,16 +5,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace asp_ng.ViewModels
 {
-    public class MakeViewModel
+    public class MakeViewModel:KeyValuePairViewModel
     {
        
         public MakeViewModel()
         {
-            Models = new Collection<ModelViewModel>();
+            Models = new Collection<KeyValuePairViewModel>();
         }
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<ModelViewModel> Models { get; set; }
+        public ICollection<KeyValuePairViewModel> Models { get; set; }
 
     }
 }

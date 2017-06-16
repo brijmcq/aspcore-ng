@@ -32,6 +32,17 @@ namespace asp_ng.Controllers
             vehicle.LastUpdate = DateTime.Now;
             context.Vehicles.Add(vehicle);
             await context.SaveChangesAsync();
+
+
+            vehicle = await context.Vehicles
+              .Include(x => x.Features)
+                  .ThenInclude(y => y.Feature)
+              .Include(x => x.Model)
+                  .ThenInclude(x => x.Make)
+              .SingleOrDefaultAsync(x => x.Id == vehicle.Id);
+
+
+
             var result = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
             return Ok(result);
         }
@@ -41,10 +52,15 @@ namespace asp_ng.Controllers
         {
             if(!ModelState.IsValid)
             return BadRequest(ModelState);
-    
-            var vehicle =  await context.Vehicles.Include(x=> x.Features).SingleOrDefaultAsync( x=> x.Id == id);
-    
-            if(vehicle==null)
+
+            var vehicle = await context.Vehicles
+            .Include(x => x.Features)
+                .ThenInclude(y => y.Feature)
+            .Include(x => x.Model)
+                .ThenInclude(x => x.Make)
+            .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (vehicle==null)
                 return NotFound();
     
             mapper.Map<VehicleViewModel, Vehicle>(vm,vehicle);
