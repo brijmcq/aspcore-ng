@@ -25,8 +25,9 @@ export class VehicleFormComponent implements OnInit {
   });
   }
   onMakeChange(){
-  var selectedMake = this.makes.find( item => item.id ==this.vehicle.make);
-  this.models = selectedMake?selectedMake.models:[];
+  var selectedMake = this.makes.find( item => item.id ==this.vehicle.makeId);
+  this.models = selectedMake ? selectedMake.models : [];
+  delete this.vehicle.modelId;
   }
 
 }

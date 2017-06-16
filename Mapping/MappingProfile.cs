@@ -10,7 +10,7 @@ namespace asp_ng.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Make,KeyValuePairViewModel>();
+            CreateMap<Make,MakeViewModel>();
             CreateMap<Model,KeyValuePairViewModel>();
             CreateMap<Feature, FeatureViewModel>();
             CreateMap<Vehicle,SaveVehicleViewModel>()
