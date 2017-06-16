@@ -13,21 +13,26 @@ namespace asp_ng.Mapping
             CreateMap<Make,MakeViewModel>();
             CreateMap<Model,ModelViewModel>();
             CreateMap<Feature, FeatureViewModel>();
-            CreateMap<Vehicle,VehicleViewModel>()
+            CreateMap<Vehicle,SaveVehicleViewModel>()
             .ForMember( x=> x.Contact, opt=> opt.MapFrom( y=> new Contact{Name = y.ContactName
             ,Email = y.ContactEmail, Phone = y.ContactPhone }))
             .ForMember( x=> x.Features, opt=> opt.MapFrom( y=> y.Features.Select(z=> z.FeatureId)));
+           
+            CreateMap<Vehicle, VehicleViewModel>()
+            .ForMember(vm=> vm.Make, opt=> opt.MapFrom(m=> m.Model.Make))
+             .ForMember( x=> x.Contact, opt=> opt.MapFrom( y=> new Contact{Name = y.ContactName
+            ,Email = y.ContactEmail, Phone = y.ContactPhone }))
+            .ForMember( x=> x.Features, opt=> opt.MapFrom( y=> y.Features.Select(z=> new FeatureViewModel{Id= z.FeatureId , Name= z.Feature.Name})));
 
 
-
-            CreateMap<VehicleViewModel,Vehicle>()
+            CreateMap<SaveVehicleViewModel,Vehicle>()
             .ForMember(x=> x.Id, opt=> opt.Ignore())
             .ForMember(x=> x.ContactName, opt => opt.MapFrom( y=> y.Contact.Name))
             .ForMember(x=> x.ContactPhone, opt => opt.MapFrom( y=> y.Contact.Phone))
             .ForMember(x=> x.ContactEmail, opt => opt.MapFrom( y=> y.Contact.Email))
             .ForMember(x=> x.Features, opt => opt.Ignore())
             .AfterMap( (src,target)=>{
-              var removedFeatures = target.Features.Where( x=> src.Features.Contains(x.FeatureId));
+              var removedFeatures = target.Features.Where( x=> src.Features.Contains( x.FeatureId));
                 foreach( var item in removedFeatures){
                     target.Features.Remove(item);
                 }

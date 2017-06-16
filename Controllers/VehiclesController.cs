@@ -66,7 +66,12 @@ namespace asp_ng.Controllers
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id){
-            var vehicle = await context.Vehicles.Include(x=> x.Features).SingleOrDefaultAsync(x=> x.Id==id);
+            var vehicle = await context.Vehicles
+            .Include(x=> x.Features)
+                .ThenInclude(y=> y.Feature)
+            .Include(x=> x.Model)
+                .ThenInclude(x=> x.Make)
+            .SingleOrDefaultAsync(x=> x.Id==id);
             
 
             if(vehicle==null)
