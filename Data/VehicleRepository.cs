@@ -1,27 +1,38 @@
-﻿using asp_ng.Models;
+﻿using asp_ng.Core;
+using asp_ng.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace asp_ng.Data
 {
-    public class VehicleRepository
+    public class VehicleRepository : IVehicleRepository
     {
         private readonly VegaDbContext context;
         public VehicleRepository(VegaDbContext context)
         {
             this.context = context;
         }
-        public async Task<Vehicle> GetVehicle(int id)
+        public async Task<Vehicle> GetVehicle(int id,bool includeRelated = true)
         {
+            if (!includeRelated)
+            {
+                return await context.Vehicles.FindAsync(id);
+            }
             return await context.Vehicles
          .Include(x => x.Features)
              .ThenInclude(y => y.Feature)
          .Include(x => x.Model)
              .ThenInclude(x => x.Make)
          .SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public void Add(Vehicle vehicle)
+        {
+            context.Vehicles.Add(vehicle);
+        }
+        public void Remove(Vehicle vehicle)
+        {
+            context.Remove(vehicle);
         }
     }
 }

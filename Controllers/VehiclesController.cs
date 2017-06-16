@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using asp_ng.Data;
 using asp_ng.Models;
 using asp_ng.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using asp_ng.Core;
 
 namespace asp_ng.Controllers
 {
@@ -15,11 +12,15 @@ namespace asp_ng.Controllers
     public class VehiclesController : Controller
     {
         private readonly IMapper mapper;
-        private readonly VegaDbContext context;
-        public VehiclesController(IMapper mapper, VegaDbContext context)
+        private readonly IVehicleRepository repo;
+        private readonly IUnitOfWork unitOfWork;
+
+        public VehiclesController(IMapper mapper,IVehicleRepository repo,IUnitOfWork unitOfWork)
         {
-            this.context = context;
+            
             this.mapper = mapper;
+            this.repo = repo;
+            this.unitOfWork = unitOfWork;
 
         }
         [HttpPost]
@@ -30,16 +31,11 @@ namespace asp_ng.Controllers
 
             var vehicle = mapper.Map<VehicleViewModel, Vehicle>(vm);
             vehicle.LastUpdate = DateTime.Now;
-            context.Vehicles.Add(vehicle);
-            await context.SaveChangesAsync();
+            repo.Add(vehicle);
+            await unitOfWork.CompleteAsync();
 
 
-            vehicle = await context.Vehicles
-              .Include(x => x.Features)
-                  .ThenInclude(y => y.Feature)
-              .Include(x => x.Model)
-                  .ThenInclude(x => x.Make)
-              .SingleOrDefaultAsync(x => x.Id == vehicle.Id);
+            vehicle = await repo.GetVehicle(vehicle.Id);
 
 
 
@@ -48,49 +44,38 @@ namespace asp_ng.Controllers
         }
 
          [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVehicle(int id,[FromBody] VehicleViewModel vm)
+        public async Task<IActionResult> UpdateVehicle(int id,[FromBody] SaveVehicleViewModel vm)
         {
             if(!ModelState.IsValid)
             return BadRequest(ModelState);
 
-            var vehicle = await context.Vehicles
-            .Include(x => x.Features)
-                .ThenInclude(y => y.Feature)
-            .Include(x => x.Model)
-                .ThenInclude(x => x.Make)
-            .SingleOrDefaultAsync(x => x.Id == id);
+            var vehicle = await repo.GetVehicle(id);
 
             if (vehicle==null)
                 return NotFound();
     
-            mapper.Map<VehicleViewModel, Vehicle>(vm,vehicle);
+            mapper.Map<SaveVehicleViewModel, Vehicle>(vm,vehicle);
             vehicle.LastUpdate = DateTime.Now;
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
+            vehicle = await repo.GetVehicle(vehicle.Id);
             var result = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
             return Ok(result);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(int id){
-            var vehicle = await context.Vehicles.FindAsync(id);
+            var vehicle = await repo.GetVehicle(id, includeRelated:false);
             if(vehicle==null)
             return NotFound();
-            
-            context.Remove(vehicle);
-            await context.SaveChangesAsync();
+                
+            repo.Remove(vehicle);
+            await unitOfWork.CompleteAsync();
 
             return Ok(id);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id){
-            var vehicle = await context.Vehicles
-            .Include(x=> x.Features)
-                .ThenInclude(y=> y.Feature)
-            .Include(x=> x.Model)
-                .ThenInclude(x=> x.Make)
-            .SingleOrDefaultAsync(x=> x.Id==id);
-            
-
-            if(vehicle==null)
+            var vehicle = await repo.GetVehicle(id);
+            if (vehicle==null)
             return NotFound();
 
             var vm = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
