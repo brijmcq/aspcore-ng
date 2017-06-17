@@ -10,6 +10,14 @@ import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 import {ToastyModule} from 'ng2-toasty';
 import { AppErrorHandler } from "./app.error-handler";
+import * as Raven from 'raven-js';
+
+Raven
+  .config('https://6af4991b0e4d41a58a845963d9d86407@sentry.io/180651')
+  .install();
+
+
+
 export const sharedConfig: NgModule = {
     bootstrap: [ AppComponent ],
     declarations: [
