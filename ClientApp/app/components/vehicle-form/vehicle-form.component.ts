@@ -1,5 +1,6 @@
 import { VehicleService } from './../../services/vehicle.service';
 import { Component, OnInit } from '@angular/core';
+import { ToastyService } from "ng2-toasty";
 
 @Component({
   selector: 'app-vehicle-form',
@@ -15,7 +16,8 @@ export class VehicleFormComponent implements OnInit {
       contact: {}
   };
 
-  constructor( public vehicleService:VehicleService
+  constructor( public vehicleService:VehicleService,
+    private toastyService:ToastyService
     ) { }
 
   ngOnInit() {
@@ -25,6 +27,14 @@ export class VehicleFormComponent implements OnInit {
     );
   this.vehicleService.getFeatures().subscribe(item =>{
       this.features = item;
+  });
+
+  this.toastyService.success({
+      title:'success',
+      msg:'test',
+      theme:'bootstrap',
+      showClose:true,
+      timeout:5000
   });
 
   }

@@ -8,7 +8,7 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
-
+import {ToastyModule} from 'ng2-toasty';
 export const sharedConfig: NgModule = {
     bootstrap: [ AppComponent ],
     declarations: [
@@ -21,7 +21,8 @@ export const sharedConfig: NgModule = {
     ],
     imports: [
         CoreModule,
-          FormsModule,
+        ToastyModule.forRoot(),
+        FormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'vehicles/new', component:VehicleFormComponent },
