@@ -13,10 +13,10 @@ namespace asp_ng.ViewModels
         public bool IsRegistered { get; set; }
         public Contact Contact { get; set; }
         public DateTime LastUpdate{ get; set; }
-        public ICollection<FeatureViewModel> Features { get; set; }
+        public ICollection<KeyValuePairViewModel> Features { get; set; }
         public VehicleViewModel()
         {
-            Features = new Collection<FeatureViewModel>();
+            Features = new Collection<KeyValuePairViewModel>();
         }
     }
 }

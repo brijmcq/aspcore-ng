@@ -19,9 +19,9 @@ namespace asp_ng.Controllers
       this.context = context;
     }
     [HttpGet("/api/features")]
-    public async Task<IEnumerable<FeatureViewModel>> GetFeatures(){
+    public async Task<IEnumerable<KeyValuePairViewModel>> GetFeatures(){
         var features = await context.Features.ToListAsync();
-         return mapper.Map<List<Feature>, List<FeatureViewModel>>(features); 
+         return mapper.Map<List<Feature>, List<KeyValuePairViewModel>>(features); 
     }
     }
 }

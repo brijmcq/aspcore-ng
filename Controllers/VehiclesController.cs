@@ -24,12 +24,12 @@ namespace asp_ng.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> CreateVehicle([FromBody] VehicleViewModel vm)
+        public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleViewModel vm)
         {
             if(!ModelState.IsValid)
             return BadRequest(ModelState);
 
-            var vehicle = mapper.Map<VehicleViewModel, Vehicle>(vm);
+            var vehicle = mapper.Map<SaveVehicleViewModel, Vehicle>(vm);
             vehicle.LastUpdate = DateTime.Now;
             repo.Add(vehicle);
             await unitOfWork.CompleteAsync();

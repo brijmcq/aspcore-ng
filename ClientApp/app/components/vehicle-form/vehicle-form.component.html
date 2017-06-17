@@ -3,7 +3,7 @@
 <p>
     {{vehicle | json}}
 </p>
-<form action="">
+<form (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="make">Make</label>
         <select name="makeId" [(ngModel)]="vehicle.makeId" (change)="onMakeChange()" class="form-control" id="make">
@@ -36,15 +36,15 @@
     <h2>Contact</h2>
     <div class="form-group">
         <label for="contactName">Name</label>
-        <input id="contactName" type="text" class="form-control">
+        <input id="contactName" [(ngModel)]="vehicle.contact.name" name="contactName" type="text" class="form-control">
     </div>
     <div class="form-group">
         <label for="contactPhone">Phone</label>
-        <input id="contactPhone" type="text" class="form-control">
+        <input id="contactPhone"  [(ngModel)]="vehicle.contact.phone" name="contactPhone" type="text" class="form-control">
     </div>
     <div class="form-group">
         <label for="contactEmail">Email</label>
-        <input id="contactEmail" type="text" class="form-control">
+        <input id="contactEmail"   [(ngModel)]="vehicle.contact.email" name="contactEmail" type="text" class="form-control">
     </div>
     <button class="btn btn-primary">Save</button>
 </form>
