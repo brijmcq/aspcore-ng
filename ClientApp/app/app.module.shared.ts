@@ -1,7 +1,7 @@
 import { FormsModule } from '@angular/forms';
 import { CoreModule } from './core.module';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './components/app/app.component'
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -9,6 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 import {ToastyModule} from 'ng2-toasty';
+import { AppErrorHandler } from "./app.error-handler";
 export const sharedConfig: NgModule = {
     bootstrap: [ AppComponent ],
     declarations: [

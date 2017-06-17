@@ -1,11 +1,13 @@
 
 import { VehicleService } from './services/vehicle.service';
 
-import { NgModule } from "@angular/core";
+import { NgModule, ErrorHandler } from "@angular/core";
+import { AppErrorHandler } from "./app.error-handler";
 
 @NgModule({
     providers: [
-     VehicleService
+     VehicleService,
+       {provide: ErrorHandler, useClass:AppErrorHandler}
     ]
 })  
 export class CoreModule {

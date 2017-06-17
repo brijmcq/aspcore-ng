@@ -16,8 +16,7 @@ export class VehicleFormComponent implements OnInit {
       contact: {}
   };
 
-  constructor( public vehicleService:VehicleService,
-    private toastyService:ToastyService
+  constructor( public vehicleService:VehicleService
     ) { }
 
   ngOnInit() {
@@ -27,14 +26,6 @@ export class VehicleFormComponent implements OnInit {
     );
   this.vehicleService.getFeatures().subscribe(item =>{
       this.features = item;
-  });
-
-  this.toastyService.success({
-      title:'success',
-      msg:'test',
-      theme:'bootstrap',
-      showClose:true,
-      timeout:5000
   });
 
   }
