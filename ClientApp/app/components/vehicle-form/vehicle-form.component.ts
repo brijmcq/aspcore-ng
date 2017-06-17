@@ -26,6 +26,7 @@ export class VehicleFormComponent implements OnInit {
   this.vehicleService.getFeatures().subscribe(item =>{
       this.features = item;
   });
+
   }
   onMakeChange(){
   var selectedMake = this.makes.find( item => item.id ==this.vehicle.makeId);
@@ -43,6 +44,8 @@ export class VehicleFormComponent implements OnInit {
   onSubmit() {
       this.vehicleService.create(this.vehicle)
           .subscribe(x => console.log('success'));
+        
+          
   }
 
 }
