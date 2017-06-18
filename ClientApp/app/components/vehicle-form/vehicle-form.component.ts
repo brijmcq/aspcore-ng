@@ -1,3 +1,4 @@
+import { SaveVehicle, Vehicle } from './../../models/vehicle';
 import { isDevMode } from '@angular/core';
 import { VehicleService } from './../../services/vehicle.service';
 import { Component, OnInit } from '@angular/core';
@@ -5,6 +6,7 @@ import { ToastyService } from "ng2-toasty";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/Observable/forkJoin';
+import * as _ from 'underscore';
 
 
 
@@ -17,9 +19,17 @@ export class VehicleFormComponent implements OnInit {
   features: any;
   makes: any[];
   models:any[];
-  vehicle: any = {
+  vehicle: SaveVehicle = {
+      id:0,
+      makeId:0,
+      modelId:0,
+      isRegistered:false,
       features: [],
-      contact: {}
+      contact: {
+          name:'',
+          email:'',
+          phone:''
+      }
   };
 
   constructor( public vehicleService:VehicleService,
@@ -49,11 +59,20 @@ export class VehicleFormComponent implements OnInit {
             this.makes = data[0];
             this.features = data[1];
             if(this.vehicle.id)
-                this.vehicle = data[2];
+                this.setVehicle(data[2]);
        }, error =>{
             if(error.status==404)
             this.router.navigate(['/home']);
        });
+  }
+
+  private setVehicle(v:Vehicle){
+   this.vehicle.id = v[2];
+   this.vehicle.makeId = v.make.id;
+   this.vehicle.modelId = v.model.id;
+   this.vehicle.isRegistered=v.isRegistered;
+   this.vehicle.contact = v.contact;
+   this.vehicle.features = _.pluck(v.features, 'id');
   }
   onMakeChange(){
   var selectedMake = this.makes.find( item => item.id ==this.vehicle.makeId);
