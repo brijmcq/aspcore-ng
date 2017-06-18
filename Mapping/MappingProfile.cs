@@ -25,7 +25,7 @@ namespace asp_ng.Mapping
             ,Email = y.ContactEmail, Phone = y.ContactPhone }))
             .ForMember( x=> x.Features, opt=> opt.MapFrom( y=> y.Features.Select(z=> new KeyValuePairViewModel{Id= z.Feature.Id , Name= z.Feature.Name})));
 
-
+            CreateMap<FilterViewModel, Filter>();
             CreateMap<SaveVehicleViewModel,Vehicle>()
             .ForMember(x=> x.Id, opt=> opt.Ignore())
             .ForMember(x=> x.ContactName, opt => opt.MapFrom( y=> y.Contact.Name))

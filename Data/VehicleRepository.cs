@@ -2,6 +2,7 @@
 using asp_ng.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace asp_ng.Data
@@ -36,15 +37,19 @@ namespace asp_ng.Data
             context.Remove(vehicle);
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehicles()
+        public async Task<IEnumerable<Vehicle>> GetVehicles(Filter filter)
         {
-            var result = await context.Vehicles
-                .Include(x=> x.Model)
-                    .ThenInclude(x=> x.Make)
+            var query =  context.Vehicles
+                .Include(x => x.Model)
+                    .ThenInclude(x => x.Make)
                 .Include(x => x.Features)
-                    .ThenInclude( x=> x.Feature)
-                .ToListAsync();
-            return result;
+                    .ThenInclude(x => x.Feature)
+                .AsQueryable();
+            if (filter.MakeId.HasValue)
+            {
+                query = query.Where(x => x.Model.MakeId == filter.MakeId.Value);
+            }
+            return await query.ToListAsync() ;
         }
 
 

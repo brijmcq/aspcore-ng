@@ -85,13 +85,15 @@ namespace asp_ng.Controllers
             return Ok(vm); 
         }
       
-        public async Task<IEnumerable<VehicleViewModel>> GetVehicles()
+        public async Task<IEnumerable<VehicleViewModel>> GetVehicles(FilterViewModel vm)
         {
-            var vehicles = await repo.GetVehicles();
-           
-            var vm = mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleViewModel>>(vehicles);
+            var filter = mapper.Map<FilterViewModel, Filter>(vm);
 
-            return vm;
+            var vehicles = await repo.GetVehicles(filter);
+           
+           var result = mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleViewModel>>(vehicles);
+
+            return result;
         }
 
     }
