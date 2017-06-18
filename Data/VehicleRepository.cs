@@ -37,7 +37,7 @@ namespace asp_ng.Data
             context.Remove(vehicle);
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehicles(Filter filter)
+        public async Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery queryObj)
         {
             var query =  context.Vehicles
                 .Include(x => x.Model)
@@ -45,14 +45,33 @@ namespace asp_ng.Data
                 .Include(x => x.Features)
                     .ThenInclude(x => x.Feature)
                 .AsQueryable();
-            if (filter.MakeId.HasValue)
+            if (queryObj.MakeId.HasValue)
             {
-                query = query.Where(x => x.Model.MakeId == filter.MakeId.Value);
+                query = query.Where(x => x.Model.MakeId == queryObj.MakeId.Value);
             }
-            if (filter.ModelId.HasValue)
+            if (queryObj.ModelId.HasValue)
             {
-                query = query.Where(x => x.ModelId == filter.ModelId.Value);
+                query = query.Where(x => x.ModelId == queryObj.ModelId.Value);
             }
+
+            if (queryObj.SortBy == "make")
+            {
+                query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.Model.Make.Name) : query.OrderByDescending(x => x.Model.Make.Name);
+
+            }
+
+            if (queryObj.SortBy == "model")
+            {
+                query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.Model.Name) : query.OrderByDescending(x => x.Model.Name);
+
+            }
+            if (queryObj.SortBy == "contactName")
+            {
+                query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.ContactName) : query.OrderByDescending(x => x.ContactName);
+            }
+
+
+
             return await query.ToListAsync() ;
         }
 
