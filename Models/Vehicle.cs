@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace asp_ng.Models
 {
     [Table("Vehicles")]
-    public class Vehicle
+    public class T
     {
         public int Id { get; set; }
         public int ModelId { get; set; }
@@ -25,7 +25,7 @@ namespace asp_ng.Models
         public string ContactPhone { get; set; }
         public DateTime LastUpdate{ get; set; }
         public ICollection<VehicleFeature> Features { get; set; }
-        public Vehicle()
+        public T()
         {
             Features = new Collection<VehicleFeature>();
         }

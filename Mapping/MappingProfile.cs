@@ -14,19 +14,19 @@ namespace asp_ng.Mapping
             CreateMap<Make, KeyValuePairViewModel>();
             CreateMap<Model,KeyValuePairViewModel>();
             CreateMap<Feature, KeyValuePairViewModel>();
-            CreateMap<Vehicle,SaveVehicleViewModel>()
+            CreateMap<T,SaveVehicleViewModel>()
             .ForMember( x=> x.Contact, opt=> opt.MapFrom( y=> new Contact{Name = y.ContactName
             ,Email = y.ContactEmail, Phone = y.ContactPhone }))
             .ForMember( x=> x.Features, opt=> opt.MapFrom( y=> y.Features.Select(z=> z.FeatureId)));
            
-            CreateMap<Vehicle, VehicleViewModel>()
+            CreateMap<T, VehicleViewModel>()
             .ForMember(vm=> vm.Make, opt=> opt.MapFrom(m=> m.Model.Make))
             .ForMember( x=> x.Contact, opt=> opt.MapFrom( y=> new Contact{Name = y.ContactName
             ,Email = y.ContactEmail, Phone = y.ContactPhone }))
             .ForMember( x=> x.Features, opt=> opt.MapFrom( y=> y.Features.Select(z=> new KeyValuePairViewModel{Id= z.Feature.Id , Name= z.Feature.Name})));
 
             CreateMap<VehicleQueryViewModel, VehicleQuery>();
-            CreateMap<SaveVehicleViewModel,Vehicle>()
+            CreateMap<SaveVehicleViewModel,T>()
             .ForMember(x=> x.Id, opt=> opt.Ignore())
             .ForMember(x=> x.ContactName, opt => opt.MapFrom( y=> y.Contact.Name))
             .ForMember(x=> x.ContactPhone, opt => opt.MapFrom( y=> y.Contact.Phone))

@@ -1,4 +1,5 @@
 ﻿using asp_ng.Core;
+using asp_ng.Extensions;
 using asp_ng.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,7 +17,7 @@ namespace asp_ng.Data
         {
             this.context = context;
         }
-        public async Task<Vehicle> GetVehicle(int id,bool includeRelated = true)
+        public async Task<T> GetVehicle(int id,bool includeRelated = true)
         {
             if (!includeRelated)
             {
@@ -30,18 +31,18 @@ namespace asp_ng.Data
          .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public void Add(Vehicle vehicle)
+        public void Add(T vehicle)
         {
             context.Vehicles.Add(vehicle);
         }
-        public void Remove(Vehicle vehicle)
+        public void Remove(T vehicle)
         {
             context.Remove(vehicle);
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery queryObj)
+        public async Task<IEnumerable<T>> GetVehicles(VehicleQuery queryObj)
         {
-            var query =  context.Vehicles
+            var query = context.Vehicles
                 .Include(x => x.Model)
                     .ThenInclude(x => x.Make)
                 .Include(x => x.Features)
@@ -57,22 +58,14 @@ namespace asp_ng.Data
             }
 
 
-            var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>()
+            var columnsMap = new Dictionary<string, Expression<Func<T, object>>>()
             {
                 ["make"] = x => x.Model.Make.Name,
-                ["model"] = x=> x.Model.Name,
-                ["contactName"] = x=> x.ContactName
+                ["model"] = x => x.Model.Name,
+                ["contactName"] = x => x.ContactName
             };
+            query = query.ApplyOrdering(queryObj, columnsMap);
 
-            if (queryObj.IsSortAscending)
-            {
-                query = query.OrderBy(columnsMap[queryObj.SortBy]);
-            }
-            else
-            {
-                query = query.OrderByDescending(columnsMap[queryObj.SortBy]);
-            }
-        
             //if (queryObj.SortBy == "make")
             //{
             //    query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.Model.Make.Name) : query.OrderByDescending(x => x.Model.Make.Name);
@@ -89,9 +82,9 @@ namespace asp_ng.Data
 
 
 
-            return await query.ToListAsync() ;
+            return await query.ToListAsync();
         }
 
-
+        
     }
 }

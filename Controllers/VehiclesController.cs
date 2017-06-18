@@ -31,7 +31,7 @@ namespace asp_ng.Controllers
             if(!ModelState.IsValid)
             return BadRequest(ModelState);
 
-            var vehicle = mapper.Map<SaveVehicleViewModel, Vehicle>(vm);
+            var vehicle = mapper.Map<SaveVehicleViewModel, T>(vm);
             vehicle.LastUpdate = DateTime.Now;
             repo.Add(vehicle);
             await unitOfWork.CompleteAsync();
@@ -41,7 +41,7 @@ namespace asp_ng.Controllers
 
 
 
-            var result = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
+            var result = mapper.Map<T,VehicleViewModel>(vehicle);
             return Ok(result);
         }
 
@@ -56,11 +56,11 @@ namespace asp_ng.Controllers
             if (vehicle==null)
                 return NotFound();
     
-            mapper.Map<SaveVehicleViewModel, Vehicle>(vm,vehicle);
+            mapper.Map<SaveVehicleViewModel, T>(vm,vehicle);
             vehicle.LastUpdate = DateTime.Now;
             await unitOfWork.CompleteAsync();
             vehicle = await repo.GetVehicle(vehicle.Id);
-            var result = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
+            var result = mapper.Map<T,VehicleViewModel>(vehicle);
             return Ok(result);
         }
         [HttpDelete("{id}")]
@@ -80,7 +80,7 @@ namespace asp_ng.Controllers
             if (vehicle==null)
             return NotFound();
 
-            var vm = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
+            var vm = mapper.Map<T,VehicleViewModel>(vehicle);
 
             return Ok(vm); 
         }
@@ -91,7 +91,7 @@ namespace asp_ng.Controllers
 
             var vehicles = await repo.GetVehicles(filter);
            
-           var result = mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleViewModel>>(vehicles);
+           var result = mapper.Map<IEnumerable<T>, IEnumerable<VehicleViewModel>>(vehicles);
 
             return result;
         }
