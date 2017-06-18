@@ -49,6 +49,10 @@ namespace asp_ng.Data
             {
                 query = query.Where(x => x.Model.MakeId == filter.MakeId.Value);
             }
+            if (filter.ModelId.HasValue)
+            {
+                query = query.Where(x => x.ModelId == filter.ModelId.Value);
+            }
             return await query.ToListAsync() ;
         }
 

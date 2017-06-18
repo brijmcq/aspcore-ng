@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class VehicleService {
-
+  private readonly server = '/api/vehicles';
   constructor(public http:Http) {
    } 
    getMakes(){
@@ -24,9 +24,21 @@ export class VehicleService {
       return this.http.get('api/vehicles/'+id)
       .map( res => res.json());
     }
-    getVehicles(){
-      return this.http.get('api/vehicles')
+    getVehicles(filter){
+      
+      return this.http.get(this.server+
+      '?'+this.toQueryString(filter))
       .map( res => res.json());
+    }
+    toQueryString(obj){
+      var query=[];
+      for (var item in obj){
+        var value = obj[item];
+        if(value !=null && value!=undefined){
+          query.push(encodeURIComponent(item)+'='+encodeURIComponent(value));
+        }
+      }  
+      return query.join('&');    
     }
 
     update(vehicle:SaveVehicle){

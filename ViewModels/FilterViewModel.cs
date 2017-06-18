@@ -8,5 +8,6 @@ namespace asp_ng.ViewModels
     public class FilterViewModel
     {
         public int? MakeId { get; set; }
+        public int? ModelId { get; set; }
     }
 }

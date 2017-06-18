@@ -11,7 +11,7 @@ export class VehicleListComponent implements OnInit {
     private readonly PAGE_SIZE = 3; 
     queryResult: any = {};
     makes: KeyValuePair[];
-    allVehicles:Vehicle[];
+    // allVehicles:Vehicle[];
     filter:any={};
     query: any = {
         pageSize: this.PAGE_SIZE
@@ -27,34 +27,37 @@ export class VehicleListComponent implements OnInit {
 
     constructor(private vehicleService: VehicleService) { }
     ngOnInit() {
-        this.vehicleService.getVehicles()
-            .subscribe( data =>{
-                this.vehicles = data;
-                this.allVehicles=data;
-                console.log('vehicles data', this.vehicles);
-            });
+       
         this.vehicleService.getMakes()
             .subscribe(makes => this.makes = makes);
 
-        // this.populateVehicles();
+         this.populateVehicles();
     }
 
-    private populateVehicles() {
-     //   this.vehicleService.getVehicles(this.query)
-      //      .subscribe(result => this.queryResult = result);
+    private populateVehicles():void {
+         this.vehicleService.getVehicles(this.filter)
+            .subscribe( data =>{
+                this.vehicles = data;
+                // this.allVehicles=data;
+                console.log('vehicles data', this.vehicles);
+            });
+
+    //    this.vehicleService.getVehicles(this.query)
+    //        .subscribe(result => this.queryResult = result);
     }
 
     onFilterChange() {
-        var vehicles = this.allVehicles;
-        if(this.filter.makeId){
-            vehicles = vehicles.filter(x=> x.make.id== this.filter.makeId);
-        }
-        if(this.filter.modelId){
-             vehicles = vehicles.filter(x=> x.model.id== this.filter.modelId);
-        }    
-        this.vehicles = vehicles;
+        // var vehicles = this.allVehicles;
+        // if(this.filter.makeId){
+        //     vehicles = vehicles.filter(x=> x.make.id== this.filter.makeId);
+        // }
+        // if(this.filter.modelId){
+        //      vehicles = vehicles.filter(x=> x.model.id== this.filter.modelId);
+        // }    
+        // this.vehicles = vehicles;
+
         // this.query.page = 1;
-        // this.populateVehicles();
+         this.populateVehicles();
     }
     sortBy(columnName) {
         if (this.query.sortBy === columnName) {
