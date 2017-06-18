@@ -34,11 +34,13 @@ export class VehicleFormComponent implements OnInit {
 
   constructor( public vehicleService:VehicleService,
     private route:ActivatedRoute,
-    private router:Router
+    private router:Router,
+    private toastyService:ToastyService
     ) { 
-       
+  
         route.params.subscribe( x=>{
-            this.vehicle.id = +x['id'];
+            this.vehicle.id = +x['id']|| 0;
+          
         }, error =>{
             if(error.status==404)
             this.router.navigate(['/home']);
@@ -70,7 +72,7 @@ export class VehicleFormComponent implements OnInit {
   }
 
   private setVehicle(v:Vehicle){
-   this.vehicle.id = v[2];
+   this.vehicle.id = v.id;
    this.vehicle.makeId = v.make.id;
    this.vehicle.modelId = v.model.id;
    this.vehicle.isRegistered=v.isRegistered;
@@ -92,12 +94,34 @@ export class VehicleFormComponent implements OnInit {
          var index = this.vehicle.features.indexOf(featureId);
          this.vehicle.features.splice(index, 1);
       }
+    }
+  onDelete() {
+      if (confirm("Do you really want to delete this data?")) {
+          this.vehicleService.delete(this.vehicle.id)
+              .subscribe(x => {
+                  this.router.navigate(['/home']);
+              });
+      }
   }
   onSubmit() {
-      this.vehicleService.create(this.vehicle)
-          .subscribe(x => console.log('success'));
-        
+     
+        if(this.vehicle.id){
           
+            this.vehicleService.update(this.vehicle)
+            .subscribe(x=> {
+                console.log('update success?');
+                this.toastyService.success({
+                    title:'Success',
+                    msg:'Data updated',
+                    theme:'bootstrap',
+                    showClose:true,
+                    timeout:3000
+                })
+            })
+        }
+        else{
+         this.vehicleService.create(this.vehicle)
+          .subscribe(x => console.log('success'));
+        }
   }
-
 }

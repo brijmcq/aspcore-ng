@@ -1,6 +1,7 @@
 ﻿using asp_ng.Core;
 using asp_ng.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace asp_ng.Data
@@ -34,5 +35,18 @@ namespace asp_ng.Data
         {
             context.Remove(vehicle);
         }
+
+        public async Task<IEnumerable<Vehicle>> GetVehicles()
+        {
+            var result = await context.Vehicles
+                .Include(x=> x.Model)
+                    .ThenInclude(x=> x.Make)
+                .Include(x => x.Features)
+                    .ThenInclude( x=> x.Feature)
+                .ToListAsync();
+            return result;
+        }
+
+
     }
 }

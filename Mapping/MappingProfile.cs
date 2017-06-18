@@ -33,12 +33,13 @@ namespace asp_ng.Mapping
             .ForMember(x=> x.ContactEmail, opt => opt.MapFrom( y=> y.Contact.Email))
             .ForMember(x=> x.Features, opt => opt.Ignore())
             .AfterMap( (src,target)=>{
-              var removedFeatures = target.Features.Where( x=> src.Features.Contains( x.FeatureId));
+              var removedFeatures = target.Features.Where( x=> !src.Features.Contains( x.FeatureId)).ToList();
+
                 foreach( var item in removedFeatures){
                     target.Features.Remove(item);
                 }
               var addedFeatures = src.Features.Where( id => !target.Features.Any( f=> f.FeatureId == id))
-              .Select( x=> new VehicleFeature{FeatureId = x});
+              .Select( x=> new VehicleFeature{FeatureId = x}).ToList();
                 foreach(var item in addedFeatures){
                     target.Features.Add(item);
                 }

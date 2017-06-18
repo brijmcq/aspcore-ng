@@ -5,6 +5,8 @@ using asp_ng.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using asp_ng.Core;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace asp_ng.Controllers
 {
@@ -82,7 +84,15 @@ namespace asp_ng.Controllers
 
             return Ok(vm); 
         }
+      
+        public async Task<IEnumerable<VehicleViewModel>> GetVehicles()
+        {
+            var vehicles = await repo.GetVehicles();
+           
+            var vm = mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleViewModel>>(vehicles);
 
-        
+            return vm;
+        }
+
     }
 }

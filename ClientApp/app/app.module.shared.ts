@@ -1,6 +1,7 @@
 import { FormsModule } from '@angular/forms';
 import { CoreModule } from './core.module';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
+import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './components/app/app.component'
@@ -26,7 +27,8 @@ export const sharedConfig: NgModule = {
         CounterComponent,
         FetchDataComponent,
         HomeComponent,
-        VehicleFormComponent
+        VehicleFormComponent,
+        VehicleListComponent
     ],
     imports: [
         CoreModule,
@@ -35,7 +37,8 @@ export const sharedConfig: NgModule = {
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'vehicles/new', component:VehicleFormComponent },
-             { path: 'vehicles/:id', component:VehicleFormComponent },
+            { path: 'vehicles/:id', component: VehicleFormComponent },
+            { path: 'vehicles', component: VehicleListComponent},
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
