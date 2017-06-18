@@ -1,8 +1,10 @@
 ﻿using asp_ng.Core;
 using asp_ng.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace asp_ng.Data
@@ -54,21 +56,36 @@ namespace asp_ng.Data
                 query = query.Where(x => x.ModelId == queryObj.ModelId.Value);
             }
 
-            if (queryObj.SortBy == "make")
-            {
-                query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.Model.Make.Name) : query.OrderByDescending(x => x.Model.Make.Name);
 
-            }
-
-            if (queryObj.SortBy == "model")
+            var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>()
             {
-                query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.Model.Name) : query.OrderByDescending(x => x.Model.Name);
+                ["make"] = x => x.Model.Make.Name,
+                ["model"] = x=> x.Model.Name,
+                ["contactName"] = x=> x.ContactName
+            };
 
-            }
-            if (queryObj.SortBy == "contactName")
+            if (queryObj.IsSortAscending)
             {
-                query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.ContactName) : query.OrderByDescending(x => x.ContactName);
+                query = query.OrderBy(columnsMap[queryObj.SortBy]);
             }
+            else
+            {
+                query = query.OrderByDescending(columnsMap[queryObj.SortBy]);
+            }
+        
+            //if (queryObj.SortBy == "make")
+            //{
+            //    query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.Model.Make.Name) : query.OrderByDescending(x => x.Model.Make.Name);
+            //}
+
+            //if (queryObj.SortBy == "model")
+            //{
+            //    query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.Model.Name) : query.OrderByDescending(x => x.Model.Name);
+            //}
+            //if (queryObj.SortBy == "contactName")
+            //{
+            //    query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.ContactName) : query.OrderByDescending(x => x.ContactName);
+            //}
 
 
 
