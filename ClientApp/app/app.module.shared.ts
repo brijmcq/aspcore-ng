@@ -12,6 +12,7 @@ import { CounterComponent } from './components/counter/counter.component';
 import {ToastyModule} from 'ng2-toasty';
 import { AppErrorHandler } from "./app.error-handler";
 import * as Raven from 'raven-js';
+import { FeatureResolver } from "./shared/feature.resolver";
 
 Raven
   .config('https://6af4991b0e4d41a58a845963d9d86407@sentry.io/180651')
@@ -36,7 +37,11 @@ export const sharedConfig: NgModule = {
         FormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
-            { path: 'vehicles/new', component:VehicleFormComponent },
+            { path: 'vehicles/new', component:VehicleFormComponent,
+              resolve:{
+                  feature:FeatureResolver
+              }
+             },
             { path: 'vehicles/:id', component: VehicleFormComponent },
             { path: 'vehicles', component: VehicleListComponent},
             { path: 'home', component: HomeComponent },

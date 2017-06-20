@@ -49,9 +49,11 @@ export class VehicleFormComponent implements OnInit {
     }
 
   ngOnInit() {
+      this.features = this.route.snapshot.data['feature'];
+   
       var sources = [
-             this.vehicleService.getMakes(),
-        this.vehicleService.getFeatures()
+        this.vehicleService.getMakes(),
+      //  this.vehicleService.getFeatures()
       ];
       if(this.vehicle.id){
           sources.push(  this.vehicleService.getVehicle(this.vehicle.id));
@@ -59,7 +61,7 @@ export class VehicleFormComponent implements OnInit {
        Observable.forkJoin( sources)
        .subscribe( data =>{
             this.makes = data[0];
-            this.features = data[1];
+          //  this.features = data[1];
             if(this.vehicle.id){
                    this.setVehicle(data[2]);
                    this.populateModels();
