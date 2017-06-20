@@ -65,26 +65,12 @@ namespace asp_ng.Data
                 ["contactName"] = x => x.ContactName
             };
             query = query.ApplyOrdering(queryObj, columnsMap);
-
-            //if (queryObj.SortBy == "make")
-            //{
-            //    query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.Model.Make.Name) : query.OrderByDescending(x => x.Model.Make.Name);
-            //}
-
-            //if (queryObj.SortBy == "model")
-            //{
-            //    query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.Model.Name) : query.OrderByDescending(x => x.Model.Name);
-            //}
-            //if (queryObj.SortBy == "contactName")
-            //{
-            //    query = (queryObj.IsSortAscending) ? query.OrderBy(x => x.ContactName) : query.OrderByDescending(x => x.ContactName);
-            //}
-
-
-
+            query.ApplyPaging(queryObj);
+           
             return await query.ToListAsync();
         }
 
-        
+     
+
     }
 }

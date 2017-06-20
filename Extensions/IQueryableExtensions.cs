@@ -23,5 +23,21 @@ namespace asp_ng.Extensions
 
             return query;
         }
+
+        public static IQueryable<T> ApplyPaging(this IQueryable<T> query, IQueryObject queryObj)
+        {
+            if (queryObj.PageSize <= 0)
+            {
+                queryObj.PageSize = 10;
+            }
+            if (queryObj.Page <= 0)
+            {
+                queryObj.Page = 1;
+            }
+
+            return  query.Skip((queryObj.Page - 1) * queryObj.PageSize).Take(queryObj.PageSize);
+             
+        }
+
     }
 }
