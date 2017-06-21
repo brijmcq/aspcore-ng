@@ -6,9 +6,9 @@ namespace asp_ng.Core
 {
     public interface IVehicleRepository
     {
-        Task<T> GetVehicle(int id,bool includeRelated =true);
-        void Add(T vehicle);
-        void Remove(T vehicle);
-        Task<IEnumerable<T>> GetVehicles(VehicleQuery filter);
+        Task<Vehicle> GetVehicle(int id,bool includeRelated =true);
+        void Add(Vehicle vehicle);
+        void Remove(Vehicle vehicle);
+        Task<QueryResult<Vehicle>> GetVehicles(VehicleQuery filter);
     }
 }

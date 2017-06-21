@@ -31,7 +31,7 @@ namespace asp_ng.Controllers
             if(!ModelState.IsValid)
             return BadRequest(ModelState);
 
-            var vehicle = mapper.Map<SaveVehicleViewModel, T>(vm);
+            var vehicle = mapper.Map<SaveVehicleViewModel, Vehicle>(vm);
             vehicle.LastUpdate = DateTime.Now;
             repo.Add(vehicle);
             await unitOfWork.CompleteAsync();
@@ -41,7 +41,7 @@ namespace asp_ng.Controllers
 
 
 
-            var result = mapper.Map<T,VehicleViewModel>(vehicle);
+            var result = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
             return Ok(result);
         }
 
@@ -56,11 +56,11 @@ namespace asp_ng.Controllers
             if (vehicle==null)
                 return NotFound();
     
-            mapper.Map<SaveVehicleViewModel, T>(vm,vehicle);
+            mapper.Map<SaveVehicleViewModel, Vehicle>(vm,vehicle);
             vehicle.LastUpdate = DateTime.Now;
             await unitOfWork.CompleteAsync();
             vehicle = await repo.GetVehicle(vehicle.Id);
-            var result = mapper.Map<T,VehicleViewModel>(vehicle);
+            var result = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
             return Ok(result);
         }
         [HttpDelete("{id}")]
@@ -80,20 +80,20 @@ namespace asp_ng.Controllers
             if (vehicle==null)
             return NotFound();
 
-            var vm = mapper.Map<T,VehicleViewModel>(vehicle);
+            var vm = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
 
             return Ok(vm); 
         }
       
-        public async Task<IEnumerable<VehicleViewModel>> GetVehicles(VehicleQueryViewModel vm)
+        public async Task<QueryResultViewModel<VehicleViewModel>> GetVehicles(VehicleQueryViewModel vm)
         {
             var filter = mapper.Map<VehicleQueryViewModel, VehicleQuery>(vm);
 
-            var vehicles = await repo.GetVehicles(filter);
+            var queryResult = await repo.GetVehicles(filter);
            
-           var result = mapper.Map<IEnumerable<T>, IEnumerable<VehicleViewModel>>(vehicles);
+           return mapper.Map<QueryResult<Vehicle>, QueryResultViewModel<VehicleViewModel>>(queryResult);
 
-            return result;
+            
         }
 
     }

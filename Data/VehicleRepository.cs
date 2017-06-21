@@ -17,7 +17,7 @@ namespace asp_ng.Data
         {
             this.context = context;
         }
-        public async Task<T> GetVehicle(int id,bool includeRelated = true)
+        public async Task<Vehicle> GetVehicle(int id,bool includeRelated = true)
         {
             if (!includeRelated)
             {
@@ -31,17 +31,18 @@ namespace asp_ng.Data
          .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public void Add(T vehicle)
+        public void Add(Vehicle vehicle)
         {
             context.Vehicles.Add(vehicle);
         }
-        public void Remove(T vehicle)
+        public void Remove(Vehicle vehicle)
         {
             context.Remove(vehicle);
         }
 
-        public async Task<IEnumerable<T>> GetVehicles(VehicleQuery queryObj)
+        public async Task<QueryResult<Vehicle>> GetVehicles(VehicleQuery queryObj)
         {
+            var result = new QueryResult<Vehicle>();
             var query = context.Vehicles
                 .Include(x => x.Model)
                     .ThenInclude(x => x.Make)
@@ -58,16 +59,18 @@ namespace asp_ng.Data
             }
 
 
-            var columnsMap = new Dictionary<string, Expression<Func<T, object>>>()
+            var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>()
             {
                 ["make"] = x => x.Model.Make.Name,
                 ["model"] = x => x.Model.Name,
                 ["contactName"] = x => x.ContactName
             };
             query = query.ApplyOrdering(queryObj, columnsMap);
-            query.ApplyPaging(queryObj);
+            result.TotalItems = await query.CountAsync();
+            query = query.ApplyPaging(queryObj);
            
-            return await query.ToListAsync();
+            result.Items =  await query.ToListAsync();
+            return result;
         }
 
      

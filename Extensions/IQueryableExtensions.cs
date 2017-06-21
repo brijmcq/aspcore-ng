@@ -8,7 +8,7 @@ namespace asp_ng.Extensions
 {
     public static class IQueryableExtensions
     {
-        public static IQueryable<T> ApplyOrdering(this IQueryable<T> query, IQueryObject queryObj, Dictionary<string, Expression<Func<T, object>>> columnsMap)
+        public static IQueryable<Vehicle> ApplyOrdering(this IQueryable<Vehicle> query, IQueryObject queryObj, Dictionary<string, Expression<Func<Vehicle, object>>> columnsMap)
         {
             if (String.IsNullOrWhiteSpace(queryObj.SortBy) || !columnsMap.ContainsKey(queryObj.SortBy))
                 return query;
@@ -24,7 +24,7 @@ namespace asp_ng.Extensions
             return query;
         }
 
-        public static IQueryable<T> ApplyPaging(this IQueryable<T> query, IQueryObject queryObj)
+        public static IQueryable<Vehicle> ApplyPaging(this IQueryable<Vehicle> query, IQueryObject queryObj)
         {
             if (queryObj.PageSize <= 0)
             {

@@ -11,7 +11,6 @@ export class VehicleListComponent implements OnInit {
     private readonly PAGE_SIZE = 3; 
     queryResult: any = {};
     makes: KeyValuePair[];
-    // allVehicles:Vehicle[];
     query: any = {
         pageSize: this.PAGE_SIZE
     };
@@ -34,15 +33,18 @@ export class VehicleListComponent implements OnInit {
     }
 
     private populateVehicles():void {
-         this.vehicleService.getVehicles(this.query)
-            .subscribe( data =>{
-                this.vehicles = data;
-                // this.allVehicles=data;
-                console.log('vehicles data', this.vehicles);
-            });
+        //  this.vehicleService.getVehicles(this.query)
+        //     .subscribe( data =>{
+        //         this.vehicles = data;
+        //         // this.allVehicles=data;
+        //         console.log('vehicles data', this.vehicles);
+        //     });
 
-    //    this.vehicleService.getVehicles(this.query)
-    //        .subscribe(result => this.queryResult = result);
+       this.vehicleService.getVehicles(this.query)
+           .subscribe(result => {
+            this.queryResult = result;
+            console.log('theresult', result);
+        });
     }
 
     onFilterChange() {
@@ -55,7 +57,7 @@ export class VehicleListComponent implements OnInit {
         // }    
         // this.vehicles = vehicles;
 
-        // this.query.page = 1;
+         this.query.page = 1;
          this.populateVehicles();
     }
     sortBy(columnName) {

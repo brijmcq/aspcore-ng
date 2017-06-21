@@ -10,23 +10,26 @@ namespace asp_ng.Mapping
     {
         public MappingProfile()
         {
+           
             CreateMap<Make,MakeViewModel>();
             CreateMap<Make, KeyValuePairViewModel>();
             CreateMap<Model,KeyValuePairViewModel>();
             CreateMap<Feature, KeyValuePairViewModel>();
-            CreateMap<T,SaveVehicleViewModel>()
+            CreateMap<Vehicle,SaveVehicleViewModel>()
             .ForMember( x=> x.Contact, opt=> opt.MapFrom( y=> new Contact{Name = y.ContactName
             ,Email = y.ContactEmail, Phone = y.ContactPhone }))
             .ForMember( x=> x.Features, opt=> opt.MapFrom( y=> y.Features.Select(z=> z.FeatureId)));
            
-            CreateMap<T, VehicleViewModel>()
+            CreateMap<Vehicle, VehicleViewModel>()
             .ForMember(vm=> vm.Make, opt=> opt.MapFrom(m=> m.Model.Make))
             .ForMember( x=> x.Contact, opt=> opt.MapFrom( y=> new Contact{Name = y.ContactName
             ,Email = y.ContactEmail, Phone = y.ContactPhone }))
             .ForMember( x=> x.Features, opt=> opt.MapFrom( y=> y.Features.Select(z=> new KeyValuePairViewModel{Id= z.Feature.Id , Name= z.Feature.Name})));
 
+
+            CreateMap(typeof(QueryResult<>), typeof(QueryResultViewModel<>));
             CreateMap<VehicleQueryViewModel, VehicleQuery>();
-            CreateMap<SaveVehicleViewModel,T>()
+            CreateMap<SaveVehicleViewModel,Vehicle>()
             .ForMember(x=> x.Id, opt=> opt.Ignore())
             .ForMember(x=> x.ContactName, opt => opt.MapFrom( y=> y.Contact.Name))
             .ForMember(x=> x.ContactPhone, opt => opt.MapFrom( y=> y.Contact.Phone))
