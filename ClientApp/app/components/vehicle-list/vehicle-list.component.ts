@@ -3,36 +3,36 @@ import { KeyValuePair, Vehicle } from "../../models/vehicle";
 import { VehicleService } from "../../services/vehicle.service";
 
 @Component({
-  selector: 'app-vehicle-list',
-  templateUrl: './vehicle-list.component.html',
-  styleUrls: ['./vehicle-list.component.css']
+    selector: 'app-vehicle-list',
+    templateUrl: './vehicle-list.component.html',
+    styleUrls: ['./vehicle-list.component.css']
 })
 export class VehicleListComponent implements OnInit {
-    private readonly PAGE_SIZE = 3; 
+    private readonly PAGE_SIZE = 3;
     queryResult: any = {};
     makes: KeyValuePair[];
     query: any = {
         pageSize: this.PAGE_SIZE
     };
     columns = [
-        { title: 'Id' },    
+        { title: 'Id' },
         { title: 'Make', key: 'make', isSortable: true },
         { title: 'Model', key: 'model', isSortable: true },
-        { title: 'Contact Name', key: 'contactName', isSortable: true },      
+        { title: 'Contact Name', key: 'contactName', isSortable: true },
         {}
     ];
     vehicles: Vehicle[];
 
     constructor(private vehicleService: VehicleService) { }
     ngOnInit() {
-       
+
         this.vehicleService.getMakes()
             .subscribe(makes => this.makes = makes);
 
-         this.populateVehicles();
+        this.populateVehicles();
     }
 
-    private populateVehicles():void {
+    private populateVehicles(): void {
         //  this.vehicleService.getVehicles(this.query)
         //     .subscribe( data =>{
         //         this.vehicles = data;
@@ -40,11 +40,11 @@ export class VehicleListComponent implements OnInit {
         //         console.log('vehicles data', this.vehicles);
         //     });
 
-       this.vehicleService.getVehicles(this.query)
-           .subscribe(result => {
-            this.queryResult = result;
-            console.log('theresult', result);
-        });
+        this.vehicleService.getVehicles(this.query)
+            .subscribe(result => {
+                this.queryResult = result;
+                console.log('theresult', result);
+            });
     }
 
     onFilterChange() {
@@ -57,11 +57,12 @@ export class VehicleListComponent implements OnInit {
         // }    
         // this.vehicles = vehicles;
 
-         this.query.page = 1;
-         this.populateVehicles();
+        this.query.page = 1;
+
+        this.populateVehicles();
     }
     sortBy(columnName) {
-    
+
         if (this.query.sortBy === columnName) {
             this.query.isSortAscending = !this.query.isSortAscending;
         } else {
@@ -75,15 +76,13 @@ export class VehicleListComponent implements OnInit {
         this.populateVehicles();
     }
 
-    resetFilter(){
-        this.query={};
-        this.onFilterChange();
+    resetFilter() {
 
-        //       this.query = {
-        //     page: 1,
-        //     pageSize: this.PAGE_SIZE
-        // };
-        // this.populateVehicles();
+        this.query = {
+            page: 1,
+            pageSize: this.PAGE_SIZE
+        };
+        this.populateVehicles();
     }
 
 
