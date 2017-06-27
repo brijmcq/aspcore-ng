@@ -14,6 +14,7 @@ import { AppErrorHandler } from "./app.error-handler";
 import * as Raven from 'raven-js';
 import { FeatureResolver } from "./shared/feature.resolver";
 import { PaginationComponent } from "./shared/pagination.component";
+import { ViewVehicleComponent } from "./components/view-vehicle/view-vehicle.component";
 
 Raven
   .config('https://6af4991b0e4d41a58a845963d9d86407@sentry.io/180651')
@@ -31,7 +32,8 @@ export const sharedConfig: NgModule = {
         HomeComponent,
         VehicleFormComponent,
         VehicleListComponent,
-        PaginationComponent
+        PaginationComponent,
+        ViewVehicleComponent
     ],
     imports: [
         CoreModule,
@@ -44,8 +46,9 @@ export const sharedConfig: NgModule = {
                   feature:FeatureResolver
               }
              },
-            { path: 'vehicles/:id', component: VehicleFormComponent },
-            { path: 'vehicles', component: VehicleListComponent},
+            { path: 'vehicles/edit/:id', component: VehicleFormComponent},
+            { path: 'vehicles/:id', component: ViewVehicleComponent },
+            { path: 'vehicles', component: VehicleListComponent },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },

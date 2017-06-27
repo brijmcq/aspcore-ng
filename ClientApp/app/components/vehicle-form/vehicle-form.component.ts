@@ -40,7 +40,7 @@ export class VehicleFormComponent implements OnInit {
   
         route.params.subscribe( x=>{
             this.vehicle.id = +x['id']|| 0;
-          
+          console.log('may id');
         }, error =>{
             if(error.status==404)
             this.router.navigate(['/home']);
@@ -60,10 +60,11 @@ export class VehicleFormComponent implements OnInit {
       }
        Observable.forkJoin( sources)
        .subscribe( data =>{
+           console.log('datas',data);
             this.makes = data[0];
           //  this.features = data[1];
             if(this.vehicle.id){
-                   this.setVehicle(data[2]);
+                   this.setVehicle(data[1]);
                    this.populateModels();
             }
              
@@ -123,7 +124,9 @@ export class VehicleFormComponent implements OnInit {
         }
         else{
          this.vehicleService.create(this.vehicle)
-          .subscribe(x => console.log('success'));
+          .subscribe(x => {
+            this.router.navigate(['/vehicles']);
+        });
         }
   }
 }

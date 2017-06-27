@@ -49,7 +49,7 @@ export class PaginationComponent implements OnChanges {
 		this.currentPage = page; 
 		this.pageChanged.emit(page);
 	}
-
+ 
 	previous(){
 		if (this.currentPage == 1)
 			return;

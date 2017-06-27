@@ -5,12 +5,14 @@ import { VehicleService } from './services/vehicle.service';
 import { NgModule, ErrorHandler } from "@angular/core";
 import { AppErrorHandler } from "./app.error-handler";
 import { VehicleResolver } from "./shared/vehicle.resolver";
+import { PhotoService } from "./services/photo.service";
 
 @NgModule({
     providers: [
      VehicleService,
      VehicleResolver,
      FeatureResolver,
+       PhotoService,
        {provide: ErrorHandler, useClass:AppErrorHandler}
     ]
 })  
