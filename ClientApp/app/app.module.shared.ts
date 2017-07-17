@@ -40,7 +40,7 @@ export const sharedConfig: NgModule = {
         ToastyModule.forRoot(),
         FormsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
             { path: 'vehicles/new', component:VehicleFormComponent,
               resolve:{
                   feature:FeatureResolver
