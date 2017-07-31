@@ -16,6 +16,9 @@ import { FeatureResolver } from "./shared/feature.resolver";
 import { PaginationComponent } from "./shared/pagination.component";
 import { ViewVehicleComponent } from "./components/view-vehicle/view-vehicle.component";
 
+
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 Raven
   .config('https://6af4991b0e4d41a58a845963d9d86407@sentry.io/180651')
   .install();
@@ -33,11 +36,14 @@ export const sharedConfig: NgModule = {
         VehicleFormComponent,
         VehicleListComponent,
         PaginationComponent,
-        ViewVehicleComponent
+        ViewVehicleComponent,
+     
     ],
     imports: [
         CoreModule,
         ToastyModule.forRoot(),
+        AlertModule.forRoot(),
+        TabsModule.forRoot(),
         FormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
