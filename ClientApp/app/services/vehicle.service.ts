@@ -9,11 +9,11 @@ export class VehicleService {
   constructor(public http:Http) {
    } 
    getMakes(){
-     return this.http.get('http://localhost:5000/api/makes')
+     return this.http.get('/api/makes')
      .map( res => res.json());
    }
     getFeatures(){
-    return this.http.get('http://localhost:5000/api/features')
+    return this.http.get('/api/features')
     .map(res => res.json());
     }
     create(vehicle) {

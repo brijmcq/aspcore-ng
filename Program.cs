@@ -14,8 +14,10 @@ namespace asp_ng
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
+             //   .UseSetting("detailedErrors","true") // dev only
                 .UseIISIntegration()
                 .UseStartup<Startup>()
+              //  .CaptureStartupErrors(true) //dev only
                 .Build();
 
             host.Run();
