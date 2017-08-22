@@ -1,3 +1,4 @@
+import { MakeFormComponent } from './components/make-form/make-form.component';
 import { FormsModule } from '@angular/forms';
 import { CoreModule } from './core.module';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
@@ -37,6 +38,7 @@ export const sharedConfig: NgModule = {
         VehicleListComponent,
         PaginationComponent,
         ViewVehicleComponent,
+        MakeFormComponent
      
     ],
     imports: [
@@ -47,6 +49,7 @@ export const sharedConfig: NgModule = {
         FormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
+            { path: 'make/new', component: MakeFormComponent },
             { path: 'vehicles/new', component:VehicleFormComponent,
               resolve:{
                   feature:FeatureResolver

@@ -26,5 +26,19 @@ namespace asp_ng.Controllers
             return mapper.Map<List<Make>,List<MakeViewModel>>(makes);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddMake([FromBody] string name)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            //var vehicle = mapper.Map<SaveVehicleViewModel, Vehicle>(vm);
+            context.Makes.Add(new Make { Name = name });
+            context.SaveChanges();
+            return Ok();
+        }
+
+
+
     }
 }
