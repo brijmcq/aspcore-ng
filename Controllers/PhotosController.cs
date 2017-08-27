@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,20 +21,21 @@ namespace asp_ng.Controllers
         private readonly IHostingEnvironment host;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
-        private readonly int MAX_PHOTO_FILESIZE = 5 * 1024 * 1024;
-        private readonly string[] ACCEPTED_FILETYPES = new[] { ".jpg", ".jpeg", ".png" };
-
+        private readonly PhotoSettings photoSettings;
 
         public PhotosController(IHostingEnvironment host,
             IVehicleRepository vehicleRepository,
             IUnitOfWork unitOfWork,
-            IMapper mapper
+            IMapper mapper,
+            IOptionsSnapshot<PhotoSettings> options
             ) 
         {
+            this.photoSettings = options.Value;
             this.host = host;
             this.unitOfWork = unitOfWork;
             this.vehicleRepository = vehicleRepository;
             this.mapper = mapper;
+            
             Console.WriteLine("The environment www is" + host.WebRootPath);
 
         }
@@ -51,11 +53,11 @@ namespace asp_ng.Controllers
                 return BadRequest("No photo");
             }
             // max file size is 5mb
-            if(file.Length >MAX_PHOTO_FILESIZE)
+            if(file.Length > photoSettings.MaxFileSize)
             {
                 return BadRequest("Maximum file size exceeded");
             }
-            if(ACCEPTED_FILETYPES.Any(x => x == Path.GetExtension(file.FileName)))
+            if(!photoSettings.IsSupported(file.FileName))
             {
                 return BadRequest("Invalid file type");
             }

@@ -4,17 +4,17 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class PhotoService {
-
+    vehicleRoute = '/api/vehicles/';
     constructor(private http: Http) {}
     upload(vehicleId, photo) {
     var formData = new FormData();
     formData.append('file', photo);
-    return this.http.post(`/api/vehicles/${vehicleId}/photos`, formData)
+    return this.http.post(`${this.vehicleRoute}${vehicleId}/photos`, formData)
       .map(res => res.json());
      }
 
     getPhotos(vehicleId) {
-    return this.http.get(`/api/vehicles/${vehicleId}/photos`)
+    return this.http.get(`${this.vehicleRoute}${vehicleId}/photos`)
       .map(res => res.json());
     }
 

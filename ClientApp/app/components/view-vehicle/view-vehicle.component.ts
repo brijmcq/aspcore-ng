@@ -65,7 +65,15 @@ export class ViewVehicleComponent implements OnInit {
     }
   }
 
-   uploadPhoto() {    
+   uploadPhoto() {  
+    //   var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
+    // var file = nativeElement.files[0];
+    // nativeElement.value = ''; 
+    // this.photoService.upload(this.vehicleId, file)
+    //   .subscribe(photo => {
+    //     this.photos.push(photo);
+    //   },
+
     this.progressService.startTracking()
       .subscribe(progress => {
         this.zone.run(() => {
@@ -77,7 +85,8 @@ export class ViewVehicleComponent implements OnInit {
 
     var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
     var file = nativeElement.files[0];
-    nativeElement.value = ''; 
+ //   nativeElement.value = ''; 
+ console.log('the file is', file);
     this.photoService.upload(this.vehicleId, file)
       .subscribe(photo => {
         this.photos.push(photo);
