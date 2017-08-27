@@ -10,7 +10,8 @@ namespace asp_ng.Mapping
     {
         public MappingProfile()
         {
-           
+           //Domain to Resource
+
             CreateMap<Make,MakeViewModel>();
             CreateMap<Make, KeyValuePairViewModel>();
             CreateMap<Model,KeyValuePairViewModel>();
@@ -25,6 +26,9 @@ namespace asp_ng.Mapping
             .ForMember( x=> x.Contact, opt=> opt.MapFrom( y=> new Contact{Name = y.ContactName
             ,Email = y.ContactEmail, Phone = y.ContactPhone }))
             .ForMember( x=> x.Features, opt=> opt.MapFrom( y=> y.Features.Select(z=> new KeyValuePairViewModel{Id= z.Feature.Id , Name= z.Feature.Name})));
+            CreateMap<Photo, PhotoViewModel>();
+
+
 
 
             CreateMap(typeof(QueryResult<>), typeof(QueryResultViewModel<>));
