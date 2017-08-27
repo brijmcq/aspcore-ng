@@ -20,6 +20,9 @@ namespace asp_ng.Controllers
         private readonly IHostingEnvironment host;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly int MAX_PHOTO_FILESIZE = 5 * 1024 * 1024;
+        private readonly string[] ACCEPTED_FILETYPES = new[] { ".jpg", ".jpeg", ".png" };
+
 
         public PhotosController(IHostingEnvironment host,
             IVehicleRepository vehicleRepository,
@@ -37,10 +40,28 @@ namespace asp_ng.Controllers
         public async Task<IActionResult> Upload(int vehicleId, IFormFile file) {
             var vehicle = await vehicleRepository.GetVehicle(vehicleId, includeRelated: false);
 
-            if(vehicle == null)
+        
+            #region validations
+            if (vehicle == null)
             {
                 return NotFound();
             }
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No photo");
+            }
+            // max file size is 5mb
+            if(file.Length >MAX_PHOTO_FILESIZE)
+            {
+                return BadRequest("Maximum file size exceeded");
+            }
+            if(ACCEPTED_FILETYPES.Any(x => x == Path.GetExtension(file.FileName)))
+            {
+                return BadRequest("Invalid file type");
+            }
+
+            #endregion
+
 
             var uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
             if (!Directory.Exists(uploadsFolderPath))
