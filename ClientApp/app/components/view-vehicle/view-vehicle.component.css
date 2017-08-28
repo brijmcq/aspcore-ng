@@ -1,5 +1,38 @@
 .uploaded-photos{
     height: 200px;
-    width:200px;
+    width: 200px;
 
+}
+
+.img-wrap {
+   margin:0px;
+   width:200px;
+
+}
+
+
+.img-wrap .close{
+ 
+    top: 2px;
+    right: 2px;
+    z-index: 100;
+}
+.flex-container{
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: space-around;
+
+}
+.flex-item{
+    width:200px;
+    margin-bottom: 20px !important;
+
+}
+
+.button-close{
+    position:absolute;
+    right:0;
+    z-index: 99;
 }

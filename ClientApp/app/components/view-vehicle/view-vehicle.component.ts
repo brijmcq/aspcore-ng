@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { BrowserXhr } from "@angular/http";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -22,6 +23,7 @@ export class ViewVehicleComponent implements OnInit {
   vehicleId: number; 
   photos: any[];
   progress: any;
+  isEdit= false;
   constructor(
     private zone: NgZone,
     private route: ActivatedRoute, 
@@ -55,6 +57,8 @@ export class ViewVehicleComponent implements OnInit {
             return; 
           }
         });
+
+    this.getPhotos();
 
   }
    delete() {
@@ -102,6 +106,29 @@ export class ViewVehicleComponent implements OnInit {
           timeout: 5000
         });
       });
+  }
+  toggleEdit(){
+    this.isEdit = !this.isEdit;
+  }
+
+  getPhotos():void{
+    console.log('getting phtoos...');
+    this.photoService.getPhotos(this.vehicleId) 
+    .subscribe(photos => this.photos = photos);
+  }
+
+  deletePhoto(photoId,filename, index){
+    console.log('deleting photo', photoId,filename);
+
+    this.photoService.deletePhoto(this.vehicleId,photoId,filename)
+    .subscribe( result =>{
+    console.log('deleted', result);
+    console.log('the index', index);
+    // this.photos.splice(index,1);
+    this.getPhotos();
+    },error =>{
+      console.log('photo error', error);
+    });
   }
   
 

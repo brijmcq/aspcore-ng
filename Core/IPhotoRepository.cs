@@ -9,5 +9,6 @@ namespace asp_ng.Core
     public interface IPhotoRepository
     {
         Task<IEnumerable<Photo>> GetPhotos(int vehicleId);
+        Task DeletePhotoAsync(int photoid);
     }
 }

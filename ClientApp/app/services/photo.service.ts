@@ -17,6 +17,13 @@ export class PhotoService {
     return this.http.get(`${this.vehicleRoute}${vehicleId}/photos`)
       .map(res => res.json());
     }
+    deletePhoto(vehicleId,photoId,fileName){
+      console.log('deleting...');
+      return this.http.delete(`${this.vehicleRoute}${vehicleId}/photos?photoId=${photoId}&fileName=${fileName}`,)
+      .map(res => res);
+    }
+
+    
 
 
 }

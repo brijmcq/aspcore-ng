@@ -97,6 +97,29 @@ namespace asp_ng.Controllers
             var photos = await photoRepository.GetPhotos(vehicleId);
             return mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoViewModel>>(photos);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeletePhoto(int photoId,string fileName)
+        {
+            await photoRepository.DeletePhotoAsync(photoId);
+
+            var uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads/");
+            if (!Directory.Exists(uploadsFolderPath))
+            {
+                return BadRequest();
+
+            }
+            var file = new FileInfo(Path.Combine(uploadsFolderPath, fileName));
+            if (!file.Exists)
+            {
+                return BadRequest();
+              
+            }
+            file.Delete();
+
+
+            return Ok("photo deleted");
+        }
     }
 
 

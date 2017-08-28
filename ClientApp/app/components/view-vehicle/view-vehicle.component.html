@@ -31,13 +31,30 @@
         </tab>
         <tab heading="Photos">
             <h2>Photos</h2>
+            <button *ngIf="photos?.length > 0" (click)="toggleEdit()" class="btn btn-primary">Edit</button>
+            <br>
             <input  type="file" (change)="uploadPhoto()" #fileInput>
     <div class="progress" *ngIf="progress && progress.percentage < 100">
       <div class="progress-bar" [style.width]="progress.percentage + '%'">
         <span class="sr-only">{{ progress.percentage }}% Complete</span>
       </div>
     </div>
-    <img *ngFor="let photo of photos" src="{{imageLocation}}/{{ photo.fileName }}" class="img-thumbnail uploaded-photos">
+    <div class="flex-container">
+    <div *ngFor="let photo of photos;let i = index" style="position:relative">
+           
+            <button *ngIf="isEdit" type="button" 
+            (click)="deletePhoto(photo.id,photo.fileName,i)"
+            class="btn btn-danger button-close" aria-label="Left Align">
+                    <span  class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+          </button>
+
+            <img  src="{{imageLocation}}/{{ photo.fileName }}" 
+            class="flex-item img-thumbnail uploaded-photos">
+           
+        </div>
+    </div>
+   
+  
 
         </tab>
     </tabset>

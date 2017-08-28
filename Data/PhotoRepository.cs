@@ -17,10 +17,20 @@ namespace asp_ng.Data
         {
             this.context = context;
         }
+
+        public async Task DeletePhotoAsync(int photoId)
+        {
+            var photo = new Photo { Id = photoId };
+            context.Entry(photo).State = EntityState.Deleted;
+            await context.SaveChangesAsync();
+
+        }
+
         public async Task<IEnumerable<Photo>> GetPhotos(int vehicleId)
         {
+
             return await context.Photos
-                .Where(x => x.VehicleId == vehicleId)
+                .Where(x => x.VehicleId == vehicleId).AsNoTracking()
                 .ToListAsync();
         }
     }
