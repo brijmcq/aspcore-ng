@@ -18,6 +18,7 @@ import { VehicleService } from "../../services/vehicle.service";
 export class ViewVehicleComponent implements OnInit {
 @ViewChild('fileInput') fileInput: ElementRef;
   vehicle: any;
+  imageLocation = '/uploads';
   vehicleId: number; 
   photos: any[];
   progress: any;

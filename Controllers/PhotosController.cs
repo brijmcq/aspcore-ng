@@ -22,9 +22,11 @@ namespace asp_ng.Controllers
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly PhotoSettings photoSettings;
+        private readonly IPhotoRepository photoRepository;
 
         public PhotosController(IHostingEnvironment host,
             IVehicleRepository vehicleRepository,
+            IPhotoRepository photoRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper,
             IOptionsSnapshot<PhotoSettings> options
@@ -34,11 +36,13 @@ namespace asp_ng.Controllers
             this.host = host;
             this.unitOfWork = unitOfWork;
             this.vehicleRepository = vehicleRepository;
+            this.photoRepository = photoRepository;
             this.mapper = mapper;
             
             Console.WriteLine("The environment www is" + host.WebRootPath);
 
         }
+        [HttpPost]
         public async Task<IActionResult> Upload(int vehicleId, IFormFile file) {
             var vehicle = await vehicleRepository.GetVehicle(vehicleId, includeRelated: false);
 
@@ -87,5 +91,13 @@ namespace asp_ng.Controllers
 
             return Ok(mapper.Map<Photo, PhotoViewModel>(photo));
         }
+        [HttpGet]
+        public async Task<IEnumerable<PhotoViewModel>> GetPhotos(int vehicleId)
+        {
+            var photos = await photoRepository.GetPhotos(vehicleId);
+            return mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoViewModel>>(photos);
+        }
     }
+
+
 }

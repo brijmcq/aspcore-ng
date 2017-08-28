@@ -37,7 +37,7 @@
         <span class="sr-only">{{ progress.percentage }}% Complete</span>
       </div>
     </div>
-    <img *ngFor="let photo of photos" src="/uploads/{{ photo.fileName }}" class="img-thumbnail">
+    <img *ngFor="let photo of photos" src="{{imageLocation}}/{{ photo.fileName }}" class="img-thumbnail uploaded-photos">
 
         </tab>
     </tabset>
