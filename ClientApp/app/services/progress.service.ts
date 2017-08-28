@@ -6,7 +6,8 @@ import { Subject } from "rxjs/Subject";
 
 @Injectable()
 export class ProgressService {
- private uploadProgress: Subject<any>;
+  private uploadProgress: Subject<any>;
+  private downloadProgress: Subject<any>;
    startTracking() { 
     this.uploadProgress = new Subject();
     return this.uploadProgress;
@@ -33,19 +34,24 @@ export class BrowserXhrWithProgress extends BrowserXhr {
 
   build(): XMLHttpRequest {
     var xhr: XMLHttpRequest = super.build();
-    
-    xhr.upload.onprogress = (event) => {
-      this.service.notify(this.createProgress(event));
+
+  //   //for downloads
+  //   xhr.onprogress = (event) => {
+  //     this.service.downloadProgress.next(this.createProgress(event));
+  // }
+  
+  xhr.upload.onprogress = (event:ProgressEvent) => {
+  this.service.notify(this.createProgress(event));
     };
 
-    xhr.upload.onloadend = () => {
-      this.service.endTracking();
-    }
-    
-    return xhr; 
+  xhr.upload.onloadend = () => {
+    this.service.endTracking();
   }
+  return xhr; 
+  
+}
 
-  private createProgress(event) {
+  private createProgress(event : ProgressEvent) {
     return {
         total: event.total,
         percentage: Math.round(event.loaded / event.total * 100)

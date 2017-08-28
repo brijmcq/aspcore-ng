@@ -7,6 +7,16 @@ export class AppErrorHandler implements ErrorHandler{
     private ngZone:NgZone
     ){}
     handleError(error: any): void {
+        this.ngZone.run(()=>{
+            this.toastyService.error({
+               title:'Error',
+               msg:'Contact admin',
+               theme:'bootstrap',
+               showClose:true,
+               timeout:4000
+               });
+       });
+       
         if(!isDevMode()){
              Raven.captureMessage(error.originalError||error);
         }
@@ -14,15 +24,7 @@ export class AppErrorHandler implements ErrorHandler{
             throw error;
         }
            
-        this.ngZone.run(()=>{
-             this.toastyService.error({
-                title:'Error',
-                msg:'Contact admin',
-                theme:'bootstrap',
-                showClose:true,
-                timeout:4000
-                });
-        });
+  
 
        
     }

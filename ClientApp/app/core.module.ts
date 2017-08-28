@@ -1,3 +1,5 @@
+import { BrowserXhrWithProgress, ProgressService } from './services/progress.service';
+import { BrowserXhr } from '@angular/http';
 import { FeatureResolver } from './shared/feature.resolver';
 
 import { VehicleService } from './services/vehicle.service';

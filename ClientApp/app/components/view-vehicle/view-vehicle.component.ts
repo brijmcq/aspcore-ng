@@ -11,7 +11,7 @@ import { VehicleService } from "../../services/vehicle.service";
   templateUrl: './view-vehicle.component.html',
   styleUrls: ['./view-vehicle.component.css'],
    providers: [
-    { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
+    {provide: BrowserXhr, useClass: BrowserXhrWithProgress},
     ProgressService
   ]
 })
@@ -77,6 +77,7 @@ export class ViewVehicleComponent implements OnInit {
 
     this.progressService.startTracking()
       .subscribe(progress => {
+        console.log('THE PROGRESS', progress);
         this.zone.run(() => {
           this.progress = progress;
         });
@@ -86,7 +87,7 @@ export class ViewVehicleComponent implements OnInit {
 
     var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
     var file = nativeElement.files[0];
- //   nativeElement.value = ''; 
+    nativeElement.value = ''; 
  console.log('the file is', file);
     this.photoService.upload(this.vehicleId, file)
       .subscribe(photo => {
@@ -95,7 +96,7 @@ export class ViewVehicleComponent implements OnInit {
       err => {
         this.toasty.error({
           title: 'Error',
-          msg: err.text(),
+          msg: err.text(),  
           theme: 'bootstrap',
           showClose: true,
           timeout: 5000
