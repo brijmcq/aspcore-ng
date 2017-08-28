@@ -1,3 +1,12 @@
+
+<h1>New Make</h1>
 <p>
-  make-form works!
 </p>
+<form #f="ngForm" (ngSubmit)="logForm(f)" novalidate>
+    <div class="form-group">
+        <label for="make">Make</label>
+        <input name="name" type="text" ngModel required>
+        <!-- <div *ngIf="make.touched && !make.valid" class="alert alert-danger">Required field</div> -->
+    </div>
+    <button [disabled]="!f.valid" class="btn btn-primary">Add</button>
+  </form>

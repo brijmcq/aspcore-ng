@@ -1,3 +1,4 @@
+import { MakeService } from './services/make.service';
 import { BrowserXhrWithProgress, ProgressService } from './services/progress.service';
 import { BrowserXhr } from '@angular/http';
 import { FeatureResolver } from './shared/feature.resolver';
@@ -14,7 +15,8 @@ import { PhotoService } from "./services/photo.service";
      VehicleService,
      VehicleResolver,
      FeatureResolver,
-       PhotoService,
+     PhotoService,
+     MakeService,
        {provide: ErrorHandler, useClass:AppErrorHandler}
     ]
 })  

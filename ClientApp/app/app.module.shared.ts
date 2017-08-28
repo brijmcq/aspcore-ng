@@ -1,5 +1,5 @@
 import { MakeFormComponent } from './components/make-form/make-form.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from './core.module';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
@@ -47,6 +47,7 @@ export const sharedConfig: NgModule = {
         AlertModule.forRoot(),
         TabsModule.forRoot(),
         FormsModule,
+        ReactiveFormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
             { path: 'make/new', component: MakeFormComponent },

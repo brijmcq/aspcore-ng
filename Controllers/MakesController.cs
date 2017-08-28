@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace asp_ng.Controllers
 {
+    [Route("/api/makes")]
     public class MakesController : Controller
     {
         private readonly VegaDbContext context;
@@ -19,7 +20,8 @@ namespace asp_ng.Controllers
             this.context = context;
 
         }
-        [HttpGet("/api/makes")]
+      
+
         public async Task<IEnumerable<MakeViewModel>> GetMakes()
         {
             var makes =  await context.Makes.Include(m => m.Models).ToListAsync();
@@ -27,14 +29,14 @@ namespace asp_ng.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMake([FromBody] string name)
+        public async Task<IActionResult> AddMake([FromBody]KeyValuePairViewModel vm)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             //var vehicle = mapper.Map<SaveVehicleViewModel, Vehicle>(vm);
-            context.Makes.Add(new Make { Name = name });
-            context.SaveChanges();
+            context.Makes.Add(new Make { Name = vm.Name });
+          await  context.SaveChangesAsync();
             return Ok();
         }
 
