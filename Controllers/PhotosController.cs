@@ -110,12 +110,11 @@ namespace asp_ng.Controllers
 
             }
             var file = new FileInfo(Path.Combine(uploadsFolderPath, fileName));
-            if (!file.Exists)
+            if (file.Exists)
             {
-                return BadRequest();
-              
-            }
-            file.Delete();
+                file.Delete();
+
+            } 
 
 
             return Ok("photo deleted");
