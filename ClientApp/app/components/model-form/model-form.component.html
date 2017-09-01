@@ -1,0 +1,17 @@
+
+<h1>New Model</h1>
+<p>
+</p>
+<form #f="ngForm" (ngSubmit)="onAddModel(f)" novalidate>
+    <div class="form-group">
+        <label for="make">Make</label>
+        <select required #make="ngModel" name="makeId" [(ngModel)]="selectedMake" (change)="onMakeChange()" class="form-control" id="make">
+            <option value=""></option>
+            <option *ngFor="let item of makes" value="{{item.id}}">{{item.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input name="modelName" type="text" ngModel required>
+    </div>
+    <button [disabled]="!f.valid" class="btn btn-primary">Add</button>
+  </form>

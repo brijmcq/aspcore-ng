@@ -20,6 +20,7 @@ import { ViewVehicleComponent } from "./components/view-vehicle/view-vehicle.com
 
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ModelFormComponent } from "./components/model-form/model-form.component";
 Raven
   .config('https://6af4991b0e4d41a58a845963d9d86407@sentry.io/180651')
   .install();
@@ -38,7 +39,8 @@ export const sharedConfig: NgModule = {
         VehicleListComponent,
         PaginationComponent,
         ViewVehicleComponent,
-        MakeFormComponent
+        MakeFormComponent,
+        ModelFormComponent
      
     ],
     imports: [
@@ -51,6 +53,7 @@ export const sharedConfig: NgModule = {
         RouterModule.forRoot([
             { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
             { path: 'make/new', component: MakeFormComponent },
+            { path: 'model/new', component: ModelFormComponent },
             { path: 'vehicles/new', component:VehicleFormComponent,
               resolve:{
                   feature:FeatureResolver

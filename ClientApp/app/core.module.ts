@@ -9,6 +9,7 @@ import { NgModule, ErrorHandler } from "@angular/core";
 import { AppErrorHandler } from "./app.error-handler";
 import { VehicleResolver } from "./shared/vehicle.resolver";
 import { PhotoService } from "./services/photo.service";
+import { ModelService } from "./services/model.service";
 
 @NgModule({
     providers: [
@@ -17,6 +18,7 @@ import { PhotoService } from "./services/photo.service";
      FeatureResolver,
      PhotoService,
      MakeService,
+     ModelService,
        {provide: ErrorHandler, useClass:AppErrorHandler}
     ]
 })  

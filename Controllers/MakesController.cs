@@ -40,6 +40,18 @@ namespace asp_ng.Controllers
             return Ok();
         }
 
+        [HttpPost("models")]
+        public async Task<IActionResult> AddModel([FromBody]KeyValuePairViewModel vm)
+        {
+            //the vm.id here is the make id.
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            context.Models.Add(new Model { MakeId = vm.Id, Name = vm.Name });
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
 
 
     }
