@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using asp_ng.Core;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace asp_ng.Controllers
 {
@@ -17,19 +18,20 @@ namespace asp_ng.Controllers
         private readonly IVehicleRepository repo;
         private readonly IUnitOfWork unitOfWork;
 
-        public VehiclesController(IMapper mapper,IVehicleRepository repo,IUnitOfWork unitOfWork)
+        public VehiclesController(IMapper mapper, IVehicleRepository repo, IUnitOfWork unitOfWork)
         {
-            
+
             this.mapper = mapper;
             this.repo = repo;
             this.unitOfWork = unitOfWork;
 
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleViewModel vm)
         {
-            if(!ModelState.IsValid)
-            return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var vehicle = mapper.Map<SaveVehicleViewModel, Vehicle>(vm);
             vehicle.LastUpdate = DateTime.Now;
@@ -41,59 +43,63 @@ namespace asp_ng.Controllers
 
 
 
-            var result = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
+            var result = mapper.Map<Vehicle, VehicleViewModel>(vehicle);
             return Ok(result);
         }
 
-         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVehicle(int id,[FromBody] SaveVehicleViewModel vm)
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateVehicle(int id, [FromBody] SaveVehicleViewModel vm)
         {
-            if(!ModelState.IsValid)
-            return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var vehicle = await repo.GetVehicle(id);
 
-            if (vehicle==null)
+            if (vehicle == null)
                 return NotFound();
-    
-            mapper.Map<SaveVehicleViewModel, Vehicle>(vm,vehicle);
+
+            mapper.Map<SaveVehicleViewModel, Vehicle>(vm, vehicle);
             vehicle.LastUpdate = DateTime.Now;
             await unitOfWork.CompleteAsync();
             vehicle = await repo.GetVehicle(vehicle.Id);
-            var result = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
+            var result = mapper.Map<Vehicle, VehicleViewModel>(vehicle);
             return Ok(result);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVehicle(int id){
-            var vehicle = await repo.GetVehicle(id, includeRelated:false);
-            if(vehicle==null)
-            return NotFound();
-                
+        [Authorize]
+        public async Task<IActionResult> DeleteVehicle(int id)
+        {
+            var vehicle = await repo.GetVehicle(id, includeRelated: false);
+            if (vehicle == null)
+                return NotFound();
+
             repo.Remove(vehicle);
             await unitOfWork.CompleteAsync();
 
             return Ok(id);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetVehicle(int id){
+        public async Task<IActionResult> GetVehicle(int id)
+        {
             var vehicle = await repo.GetVehicle(id);
-            if (vehicle==null)
-            return NotFound();
+            if (vehicle == null)
+                return NotFound();
 
-            var vm = mapper.Map<Vehicle,VehicleViewModel>(vehicle);
+            var vm = mapper.Map<Vehicle, VehicleViewModel>(vehicle);
 
-            return Ok(vm); 
+            return Ok(vm);
         }
-      
+
         public async Task<QueryResultViewModel<VehicleViewModel>> GetVehicles(VehicleQueryViewModel vm)
         {
             var filter = mapper.Map<VehicleQueryViewModel, VehicleQuery>(vm);
 
             var queryResult = await repo.GetVehicles(filter);
-           
-           return mapper.Map<QueryResult<Vehicle>, QueryResultViewModel<VehicleViewModel>>(queryResult);
 
-            
+            return mapper.Map<QueryResult<Vehicle>, QueryResultViewModel<VehicleViewModel>>(queryResult);
+
+
         }
 
     }
